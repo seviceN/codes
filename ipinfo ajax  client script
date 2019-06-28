@@ -1,0 +1,37 @@
+function onChange(control, oldValue, newValue, isLoading, isTemplate) {
+   if (isLoading || newValue === '') {
+      return;
+   }
+	
+	var ip= new XMLHttpRequest();
+	var url='https://ipinfo.io/json';
+	ip.open('get',url);
+	ip.send();
+	
+	ip.onreadystatechange = function() {
+		
+    if (this.readyState == 4 && this.status == 200) {
+		var res=JSON.parse(this.responseText);
+		alert("ok");
+		g_form.setValue('u_ip_addr_1',res.ip);
+		g_form.setValue('u_string_full_utf8_2',res.city+", "+res.region+", "+res.country);
+	}};
+	//var f=(newValue.getValue());
+	//g_form.setValue('type_of_service',f);
+	var getE = new GlideAjax('test1');
+	var uid=g_form.getUniqueValue();
+	getE.addParam('sysparm_name','sayHi');
+	getE.addParam('sysparm_id',newValue);
+	getE.getXMLAnswer(popu);
+	
+	
+}
+
+function popu(ans){
+	ans=JSON.parse(ans);
+	g_form.setValue('location_of_the_user',ans.loc);
+	g_form.setValue('description_of_the_service',ans.dec);
+	
+	//g_form.save();	
+	
+}
