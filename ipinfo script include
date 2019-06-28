@@ -1,0 +1,18 @@
+var test1 = Class.create();
+test1.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+
+	sayHi: function() {
+		var a="hello world!";
+		var b=this.getParameter('sysparm_id');
+		var grtran=new GlideRecord('sys_user');
+		grtran.get(b);
+		var res={};
+		 res.loc=(" "+grtran.location.name);
+		res.dec=("user name is "+grtran.name.getDisplayValue()+", living in "+grtran.location.name);	
+		
+		return JSON.stringify(res);
+		
+	},
+	
+    type: 'test1'
+});
