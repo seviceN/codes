@@ -1,0 +1,12 @@
+function onSubmit() {
+   //Type appropriate comment here, and begin script below
+   var cal = new XMLHttpRequest();
+	var url;
+	var txt=encodeURI("Your incident "+g_form.getValue('number')+' is updated to worknotes: '+g_form.getValue('comments')+g_form.getValue('work_notes')+'; short description: '+g_form.getValue('short_description')+'; Approval: '+g_form.getValue('approval'));
+	{
+ url='https://api.telegram.org/bot823470874:AAFKpu-2sw3WpI4WDvRm8bLqmE_gaPIwsw8/sendMessage?chat_id=874245461&text='+txt+'';
+
+	
+	cal.open("GET", url);
+	cal.send();}
+}
