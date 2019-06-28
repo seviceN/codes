@@ -1,0 +1,51 @@
+	function onLoad() {
+   //Type appropriate comment here, and begin script below
+	
+	
+		run();
+   function run(){
+	var cal = new XMLHttpRequest();
+var url='https://api.telegram.org/bot823470874:AAFKpu-2sw3WpI4WDvRm8bLqmE_gaPIwsw8/getUpdates' ;
+	cal.open("GET", url);
+	cal.send();
+	cal.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+		var res=JSON.parse(this.responseText);
+		var len=res.result.length;
+		var l_1=len-1;
+		var wn=g_scratchpad.val;
+		var myDate1 = new Date(res.result[l_1].message.date*1000).toLocaleString() ;
+		var myDate2 = new Date(wn).toLocaleString() ;
+	
+			if(wn=="") {x();}
+		else{
+			
+			if(myDate1!=myDate2) {x();}
+	}
+		
+		
+  }
+		function x(){
+			var txt="";
+			
+			 txt=myDate1+"-"+"\t"+res.result[l_1].message.text;
+				
+			for(var i=l_1-1;i>=0;i--){
+				var dt = new Date(res.result[i].message.date*1000);
+				txt=txt+"\n"+dt.toLocaleString() +"-"+"\t"+res.result[i].message.text;
+						}
+			
+			var ga=new GlideAjax('t1');
+			var uid=g_form.getUniqueValue();
+			ga.addParam('sysparm_name','upd');
+			ga.addParam('sysparm_id',uid);
+			ga.addParam('sysparm_txt',txt);
+			ga.getXMLAnswer(respop);
+			
+		}
+		function respop(an){
+				alert(an);
+			}
+	   
+};
+}}
