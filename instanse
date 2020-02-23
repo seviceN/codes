@@ -66,3 +66,59 @@
     gs.info(" put  req " + request2.getRequestBody() + '\n res \n' + response2.getBody());
 
 })(current, previous);
+
+
+
+(function executeRule(current, previous /*null when async*/ ) {
+
+    // Add your code here
+    var request = new sn_ws.RESTMessageV2();
+    var endpt = 'https://dev53150.service-now.com/api/now/table/incident?sysparm_limit=1&sys_id=' + current.sys_id;
+    request.setEndpoint(endpt);
+    request.setHttpMethod('GET');
+    var user = 'dev101301';
+    var password = 'dev101301';
+    request.setBasicAuth(user, password);
+    request.setRequestHeader("Accept", "application/json");
+    var response = request.execute();
+    var resobj = JSON.parse(response.getBody());
+    var recd = (resobj.result.length == 0) ? 'new' : 'old';
+
+
+    if (recd == 'new') {
+        var request1 = new sn_ws.RESTMessageV2();
+        request1.setEndpoint('https://dev53150.service-now.com/api/now/table/incident');
+        request1.setHttpMethod('POST');
+        var user1 = 'dev101301';
+        var password1 = 'dev101301';
+        request1.setBasicAuth(user1, password1);
+        request1.setRequestHeader("Accept", "application/json");
+        request1.setRequestHeader('Content-Type', 'application/json');
+        var resbdy = '{"comments":';
+        resbdy += JSON.stringify(current.comments_and_work_notes.getJournalEntry(-1));
+        resbdy += '}';
+        request1.setRequestBody(resbdy);
+        var response1 = request1.execute();
+    } else if (recd == 'old') {
+        var request2 = new sn_ws.RESTMessageV2();
+        request2.setEndpoint('https://dev53150.service-now.com/api/now/table/incident/' + current.sys_id + '');
+        request2.setHttpMethod('PUT');
+        var user2 = 'dev101301';
+        var password2 = 'dev101301';
+        request2.setBasicAuth(user2, password2);
+        request2.setRequestHeader("Accept", "application/json");
+        request2.setRequestHeader('Content-Type', 'application/json');
+        var resbdy1 = '{"comments":';
+        resbdy1 += JSON.stringify(current.comments_and_work_notes.getJournalEntry(-1));
+        resbdy1 += '}';
+
+        request2.setRequestBody(resbdy1);
+        var response2 = request2.execute();
+    }
+
+    gs.log('get  req ' + resobj.result.length + ' ' + request.getRequestBody() + '\n res \n' + response.getBody());
+    gs.info(" post  req " + request1.getRequestBody() + '\n res \n' + response1.getBody());
+    gs.info(" put  req " + request2.getRequestBody() + '\n res \n' + response2.getBody());
+
+
+})(current, previous);
