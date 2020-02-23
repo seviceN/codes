@@ -122,3 +122,23 @@
 
 
 })(current, previous);
+
+
+function onLoad() {
+    //Type appropriate comment here, and begin script below
+
+    if (g_form.getValue('sys_created_by') == 'dev101301') {
+        try {
+            var flds = g_form.getEditableFields();
+            for (var a = 0; a < flds.length; a++) {
+                if (flds[a] == 'state' || flds[a] == 'approval' || flds[a] == 'category' || flds[a] == 'subcategory' || flds[a] == 'comments') {
+                    jslog(flds[a]);
+                } else g_form.setReadOnly(flds[a], 'true');
+
+            }
+        } catch (e) {
+            jslog(e);
+        }
+    }
+
+}
